@@ -1,0 +1,732 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שירותים - בית חולים זיו</title>
+  <meta name="description" content="שירותים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <meta name="keywords" content="בית חולים זיו, זימון תורים, בית חולים זיו צפת, זימון תור למרפאה בית חולים זיו">
+  <meta name="robots" content="index, follow">
+  
+  <meta property="og:title" content="שירותים - בית חולים זיו">
+  <meta property="og:description" content="שירותים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="שירותים - בית חולים זיו">
+  <meta name="twitter:description" content="שירותים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+<!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '9f43f818-5001-4712-8d12-75ba41c2d004',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+</head>
+<body>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="בית חולים זיו" class="logo" />
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/services">שירותים</a></li><li><a href="/patient-information">מידע למטופלים</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="services-intro-section" data-layout-spec="שירותים-intro">
+  <div class="services-intro-container">
+    <div class="services-intro-content">
+      <h1>שירותים ומרפאות</h1>
+      <p>בית חולים זיו מציע מגוון רחב של שירותים רפואיים ומרפאות מומחים, המאורגנים בצורה ברורה ונגישה למטופלים ולמשפחותיהם. אנו מחויבים לספק טיפול רפואי מתקדם ומקיף בכל התחומים, תוך שמירה על רצף טיפולי והנגשת המידע.</p>
+    </div>
+    
+    <div class="services-intro-info-strip">
+      <div class="services-intro-info-tile">
+        <div class="services-intro-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 11L12 14L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M21 12V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <p>הנחיות ברורות להפנייה ולקבלת שירות</p>
+      </div>
+      
+      <div class="services-intro-info-tile">
+        <div class="services-intro-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"></circle>
+            <path d="M12 2V6M12 18V22M22 12H18M6 12H2M19.07 4.93L16.24 7.76M7.76 16.24L4.93 19.07M19.07 19.07L16.24 16.24M7.76 7.76L4.93 4.93" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <p>אבחון מתקדם עם ציוד רפואי חדיש</p>
+      </div>
+      
+      <div class="services-intro-info-tile">
+        <div class="services-intro-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"></circle>
+            <path d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89317 18.7122 8.75608 18.1676 9.45768C17.623 10.1593 16.8604 10.6597 16 10.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </div>
+        <p>תיאום טיפולי רב-מקצועי ורציף</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="services-intro-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 24" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="8" x2="900" y2="8" stroke="var(--border-light)" stroke-width="1"></line>
+      <line x1="0" y1="14" x2="900" y2="14" stroke="var(--border-light)" stroke-width="1"></line>
+      <g>
+        <line x1="920" y1="8" x2="950" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="920" y1="14" x2="950" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="970" y1="8" x2="1000" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="970" y1="14" x2="1000" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1020" y1="8" x2="1050" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1020" y1="14" x2="1050" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1070" y1="8" x2="1100" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1070" y1="14" x2="1100" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1120" y1="8" x2="1150" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1120" y1="14" x2="1150" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1170" y1="8" x2="1200" y2="8" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+        <line x1="1170" y1="14" x2="1200" y2="14" stroke="var(--border-light)" stroke-width="1" stroke-dasharray="8 12"></line>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="services-departments-section" data-layout-spec="שירותים-departments">
+  <div class="services-departments-container">
+    <div class="services-departments-header">
+      <h2>המחלקות שלנו</h2>
+      <p>בית חולים זיו מציע מגוון רחב של מחלקות רפואיות מתקדמות עם צוותים מקצועיים ומסורים לטיפול המיטבי במטופלים</p>
+    </div>
+
+    <div class="services-departments-grid">
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM18.5 12V21.5H27.5V24.5H15.5V12H18.5Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>רפואה משפחתית</h3>
+        <p>טיפול רפואי כולל למשפחות ולאנשים בכל גיל, מניעה, אבחון וטיפול במגוון רחב של מצבים רפואיים</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM19 12V20.414L24.293 25.707L26.414 23.586L22 19.172V12H19Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>קרדיולוגיה</h3>
+        <p>מחלקה מתקדמת לאבחון וטיפול במחלות לב וכלי דם, כולל צנתורים, בדיקות מאמץ ומעקב אחר מטופלי לב</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8C9.79 8 8 9.79 8 12V28C8 30.21 9.79 32 12 32H28C30.21 32 32 30.21 32 28V12C32 9.79 30.21 8 28 8H12ZM12 11H28C28.552 11 29 11.448 29 12V28C29 28.552 28.552 29 28 29H12C11.448 29 11 28.552 11 28V12C11 11.448 11.448 11 12 11ZM15 14V17H14V20H15V23H18V20H19V17H18V14H15ZM22 14V26H25V14H22Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>דרמטולוגיה</h3>
+        <p>טיפול במחלות עור, אבחון וטיפול בבעיות עור כרוניות ואקוטיות, כולל טיפולים קוסמטיים מתקדמים</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5L8 11V20C8 27.18 12.84 33.84 20 35C27.16 33.84 32 27.18 32 20V11L20 5ZM20 8.18L29 12.72V20C29 25.9 25.32 31.36 20 32.92C14.68 31.36 11 25.9 11 20V12.72L20 8.18ZM18.5 14V18.5H14V21.5H18.5V26H21.5V21.5H26V18.5H21.5V14H18.5Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>אורתופדיה</h3>
+        <p>מחלקה לטיפול בפגיעות ומחלות של מערכת השלד והשרירים, ניתוחים אורתופדיים ושיקום</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6C12.268 6 6 12.268 6 20C6 27.732 12.268 34 20 34C27.732 34 34 27.732 34 20C34 12.268 27.732 6 20 6ZM20 9C26.075 9 31 13.925 31 20C31 26.075 26.075 31 20 31C13.925 31 9 26.075 9 20C9 13.925 13.925 9 20 9ZM19 13V16H16V19H19V22H22V19H25V16H22V13H19Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>בריאות האישה</h3>
+        <p>מחלקה ייעודית לבריאות נשים, כולל מעקב הריון, יילוד, גינקולוגיה וטיפולי פוריות</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM14 14C12.895 14 12 14.895 12 16C12 17.105 12.895 18 14 18C15.105 18 16 17.105 16 16C16 14.895 15.105 14 14 14ZM26 14C24.895 14 24 14.895 24 16C24 17.105 24.895 18 26 18C27.105 18 28 17.105 28 16C28 14.895 27.105 14 26 14ZM13 22C13 25.866 16.134 29 20 29C23.866 29 27 25.866 27 22H13Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>ילדים</h3>
+        <p>מחלקת ילדים עם צוות מומחים בטיפול בתינוקות, ילדים ובני נוער, כולל מרפאות התמחות</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM20 11C15.029 11 11 15.029 11 20C11 24.971 15.029 29 20 29C24.971 29 29 24.971 29 20C29 15.029 24.971 11 20 11ZM20 14C23.309 14 26 16.691 26 20C26 23.309 23.309 26 20 26C16.691 26 14 23.309 14 20C14 16.691 16.691 14 20 14Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>נוירולוגיה</h3>
+        <p>מחלקה לאבחון וטיפול במחלות מערכת העצבים, כולל שבץ מוחי, אפילפסיה ומחלות ניווניות</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM16 13V17H13V20H16V24H19V20H22V17H19V13H16ZM24 13V24H27V13H24Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>אנדוקרינולוגיה</h3>
+        <p>טיפול במחלות בלוטות ואיזון הורמונלי, כולל סוכרת, בעיות בלוטת התריס והפרעות מטבוליות</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM14 14V17H11V20H14V23H17V20H20V17H17V14H14ZM23 14V26H26V14H23Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>אף אוזן גרון</h3>
+        <p>מחלקה לטיפול במחלות אף, אוזניים וגרון, כולל ניתוחים ואבחון הפרעות שמיעה ואיזון</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM14 14C12.895 14 12 14.895 12 16C12 17.105 12.895 18 14 18C15.105 18 16 17.105 16 16C16 14.895 15.105 14 14 14ZM26 14C24.895 14 24 14.895 24 16C24 17.105 24.895 18 26 18C27.105 18 28 17.105 28 16C28 14.895 27.105 14 26 14ZM20 21C16.686 21 14 23.686 14 27H17C17 25.343 18.343 24 20 24C21.657 24 23 25.343 23 27H26C26 23.686 23.314 21 20 21Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>בריאות הנפש</h3>
+        <p>מחלקה לטיפול בבעיות נפשיות ורגשיות, כולל ייעוץ פסיכולוגי, פסיכיאטריה וטיפולים תרופתיים</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5C11.716 5 5 11.716 5 20C5 28.284 11.716 35 20 35C28.284 35 35 28.284 35 20C35 11.716 28.284 5 20 5ZM20 8C26.627 8 32 13.373 32 20C32 26.627 26.627 32 20 32C13.373 32 8 26.627 8 20C8 13.373 13.373 8 20 8ZM18.5 12V21.5H27.5V24.5H15.5V12H18.5Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>גסטרואנטרולוגיה</h3>
+        <p>מחלקה לטיפול במחלות מערכת העיכול, כולל אנדוסקופיות, קולונוסקופיות ומעקב מחלות כרוניות</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+
+      <div class="services-departments-card">
+        <div class="services-departments-card-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5L8 11V20C8 27.18 12.84 33.84 20 35C27.16 33.84 32 27.18 32 20V11L20 5ZM20 8.18L29 12.72V20C29 25.9 25.32 31.36 20 32.92C14.68 31.36 11 25.9 11 20V12.72L20 8.18ZM18.5 14V18.5H14V21.5H18.5V26H21.5V21.5H26V18.5H21.5V14H18.5Z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>אונקולוגיה</h3>
+        <p>מרכז מתקדם לאבחון וטיפול במחלות ממאירות, כולל כימותרפיה, הקרנות וטיפולים ביולוגיים</p>
+        <a href="#contact" class="btn-primary">פנו אלינו</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="services-departments-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,30 Q300,20 600,30 T1200,30 L1200,60 Z" fill="var(--accent)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="services-team-section" data-layout-spec="שירותים-team">
+  <div class="services-team-container">
+    <div class="services-team-content">
+      <div class="services-team-intro">
+        <h2>הכירו את צוות הטיפול שלנו</h2>
+        <p>הצוות הרפואי שלנו משלב מקצועיות רפואית ברמה הגבוהה ביותר עם אמפתיה אמיתית ותקשורת ברורה. אנחנו כאן כדי להקשיב, להבין ולספק לכם את הטיפול הטוב ביותר בכל שלב.</p>
+      </div>
+    </div>
+    
+    <div class="services-team-grid">
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-1" data-context="Professional headshot of a female Israeli doctor in her 40s wearing white medical coat, warm smile, natural hospital lighting, clean white background, medical setting" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-1.webp" alt="ד״ר שרה לוי - מנהלת מחלקה פנימית">
+        </div>
+        <h3>ד״ר שרה לוי</h3>
+        <p class="services-team-role">מנהלת מחלקה פנימית</p>
+        <p class="services-team-approach">מאמינה בטיפול הוליסטי ובשיתוף פעולה עם המטופל</p>
+      </div>
+
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-2" data-context="Professional headshot of a male Israeli surgeon in his 50s wearing surgical scrubs and white coat, confident expression, natural hospital lighting, clean background" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-2.webp" alt="ד״ר יוסי כהן - מנתח בכיר">
+        </div>
+        <h3>ד״ר יוסי כהן</h3>
+        <p class="services-team-role">מנתח בכיר במחלקה כירורגית</p>
+        <p class="services-team-approach">מתמחה בניתוחים מינימליים פולשניים ושיקום מהיר</p>
+      </div>
+
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-3" data-context="Professional headshot of a female Israeli pediatrician in her 30s wearing white medical coat, friendly smile, colorful stethoscope, natural lighting, warm hospital background" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-3.webp" alt="ד״ר מיכל אברהם - רופאת ילדים">
+        </div>
+        <h3>ד״ר מיכל אברהם</h3>
+        <p class="services-team-role">רופאת ילדים ומתבגרים</p>
+        <p class="services-team-approach">יוצרת אווירה חמה ומרגיעה לילדים ולהוריהם</p>
+      </div>
+
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-4" data-context="Professional headshot of a male Israeli cardiologist in his 60s wearing white medical coat, glasses, reassuring smile, natural hospital lighting, clean background" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-4.webp" alt="ד״ר דוד מזרחי - קרדיולוג בכיר">
+        </div>
+        <h3>ד״ר דוד מזרחי</h3>
+        <p class="services-team-role">קרדיולוג בכיר</p>
+        <p class="services-team-approach">מתמקד במניעה ובטיפול מותאם אישית</p>
+      </div>
+
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-5" data-context="Professional headshot of a female Israeli nurse in her 40s wearing blue scrubs, warm caring expression, natural hospital lighting, clinical background" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-5.webp" alt="אחות רחל דהן - אחות מוסמכת">
+        </div>
+        <h3>אחות רחל דהן</h3>
+        <p class="services-team-role">אחות מוסמכת במחלקה כירורגית</p>
+        <p class="services-team-approach">מספקת תמיכה רגשית ומקצועית בכל שלב</p>
+      </div>
+
+      <div class="services-team-card">
+        <div class="services-team-photo">
+          <img data-placeholder="services-team-image-6" data-context="Professional headshot of a male Israeli emergency room doctor in his 30s wearing blue scrubs, focused expression, natural hospital lighting, ER background" data-element-type="image" width="300" height="300" src="/assets/site-services-team-image-6.webp" alt="ד״ר עומר שמעון - רופא חדר מיון">
+        </div>
+        <h3>ד״ר עומר שמעון</h3>
+        <p class="services-team-role">רופא בחדר מיון</p>
+        <p class="services-team-approach">מומחה בטיפול דחוף ותקשורת ברורה במצבי לחץ</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="services-team-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 L0,20 L10,22 L20,18 L30,24 L40,20 L50,22 L60,18 L70,24 L80,20 L90,22 L100,18 L110,24 L120,20 L130,22 L140,18 L150,24 L160,20 L170,22 L180,18 L190,24 L200,20 L210,22 L220,18 L230,24 L240,20 L250,22 L260,18 L270,24 L280,20 L290,22 L300,18 L310,24 L320,20 L330,22 L340,18 L350,24 L360,20 L370,22 L380,18 L390,24 L400,20 L410,22 L420,18 L430,24 L440,20 L450,22 L460,18 L470,24 L480,20 L490,22 L500,18 L510,24 L520,20 L530,22 L540,18 L550,24 L560,20 L570,22 L580,18 L590,24 L600,20 L610,22 L620,18 L630,24 L640,20 L650,22 L660,18 L670,24 L680,20 L690,22 L700,18 L710,24 L720,20 L730,22 L740,18 L750,24 L760,20 L770,22 L780,18 L790,24 L800,20 L810,22 L820,18 L830,24 L840,20 L850,22 L860,18 L870,24 L880,20 L890,22 L900,18 L910,24 L920,20 L930,22 L940,18 L950,24 L960,20 L970,22 L980,18 L990,24 L1000,20 L1010,22 L1020,18 L1030,24 L1040,20 L1050,22 L1060,18 L1070,24 L1080,20 L1090,22 L1100,18 L1110,24 L1120,20 L1130,22 L1140,18 L1150,24 L1160,20 L1170,22 L1180,18 L1190,24 L1200,20 L1200,40 Z" fill="var(--bg-light)" opacity="0.3"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="services-faq-section" data-layout-spec="שירותים-faq">
+  <div class="services-faq-container">
+    <div class="services-faq-intro">
+      <h2>שאלות נפוצות</h2>
+      <p>מצאו תשובות לשאלות הנפוצות ביותר על שירותי בית חולים זיו. אנחנו כאן כדי לעזור לכם להבין את התהליכים ולהרגיש בטוחים יותר.</p>
+    </div>
+    
+    <div class="services-faq-grid">
+      <div class="services-faq-item">
+        <h3>איך מזמנים תור למרפאה בבית חולים זיו?</h3>
+        <p>ניתן לזמן תור דרך מוקד הטלפוני שלנו, באמצעות אתר האינטרנט, או דרך אפליקציית בריאות של קופת החולים שלכם. מומלץ להזמין תור מראש כדי להבטיח זמינות.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>מה צריך להביא לביקור ראשון?</h3>
+        <p>יש להביא תעודת זהות, כרטיס חבר בקופת חולים, תוצאות בדיקות קודמות אם קיימות, ורשימה של תרופות שאתם נוטלים. מומלץ להגיע 15 דקות לפני המועד.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>כמה זמן לוקח לקבל תוצאות בדיקות?</h3>
+        <p>בדיקות דם רגילות מתקבלות תוך 24-48 שעות. בדיקות מורכבות יותר עשויות לקחת עד שבוע. תוצאות בדיקות דחופות מתקבלות באותו יום או למחרת.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>האם ביטוח משלים מכוסה בבית החולים?</h3>
+        <p>בית חולים זיו עובד עם רוב חברות הביטוח המשלים בישראל. מומלץ לבדוק עם חברת הביטוח שלכם את היקף הכיסוי לפני הטיפול ולהציג אישור מראש במידת הצורך.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>איך שומרים על פרטיות המטופל?</h3>
+        <p>אנו פועלים לפי תקנות הגנת הפרטיות ומחויבים לשמירה מוחלטת על סודיות רפואית. כל המידע הרפואי מאוחסן במערכות מאובטחות ונגיש רק לצוות המורשה.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>איך מתקשרים עם הרופא לאחר הביקור?</h3>
+        <p>ניתן ליצור קשר עם המרפאה בטלפון במהלך שעות הפעילות. במקרים דחופים, ניתן לפנות למוקד הטלפוני הזמין 24/7. שאלות לא דחופות ניתן לשלוח דרך מערכת ההודעות באפליקציה.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>האם יש חניה בבית החולים?</h3>
+        <p>בית חולים זיו מציע חניון מאובטח למבקרים ומטופלים. החניה כפופה לתשלום לפי תעריף שעתי. ישנם מקומות חניה ייעודיים לנכים בקרבת הכניסה הראשית.</p>
+      </div>
+      
+      <div class="services-faq-item">
+        <h3>מה שעות הביקור במחלקות האשפוז?</h3>
+        <p>שעות הביקור הן בין השעות 16:00-20:00 בימים א׳-ה׳, ובין 10:00-20:00 בימי שישי ושבת. מספר המבקרים מוגבל לשני אנשים בו-זמנית ליד מיטת החולה.</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="services-faq-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 2" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="faq-divider-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#E6EDF5;stop-opacity:1"></stop>
+          <stop offset="100%" style="stop-color:#E6EDF5;stop-"></stop>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="1200" height="2" fill="url(#faq-divider-gradient)"></rect>
+    </svg>
+  </div>
+</section>
+
+<section class="services-cta-section" data-layout-spec="שירותים-cta">
+  <div class="services-cta-container">
+    <h2 class="services-cta-heading">לא בטוחים איזה שירות מתאים לכם?</h2>
+    <p class="services-cta-description">ספרו לנו על הצרכים שלכם ואנחנו נעזור לכם למצוא את השירות המתאים ביותר. צוות המומחים שלנו כאן כדי להנחות אתכם בכל שלב.</p>
+    <div class="services-cta-actions">
+      <a href="#contact" class="btn-primary services-cta-button">צרו קשר</a>
+      <a href="#patient-info" class="services-cta-link">מידע למטופלים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer"><div class="footer-container"><div class="footer-grid"><div class="footer-column footer-about"><img src="/assets/logo.webp" alt="בית חולים זיו" class="logo" /><p class="footer-description">מרכז רפואי מוביל המספק שירותי בריאות ברמה הגבוהה ביותר עם צוות מקצועי ומסור.</p></div><div class="footer-column footer-links"><h3 class="footer-title">קישורים מהירים</h3><ul class="footer-nav"><li><a href="/services">שירותים</a></li><li><a href="/patient-information">מידע למטופלים</a></li><li><a href="/contact">צור קשר</a></li></ul></div><div class="footer-column footer-contact"><h3 class="footer-title">יצירת קשר</h3><ul class="contact-list"><li><i class="fas fa-envelope"></i><a href="mailto:[business_email]">[business_email]</a></li><li><i class="fas fa-phone"></i><a href="tel:[business_phone]">[business_phone]</a></li><li><a href="/"><i class="fas fa-map-marker-alt"></i><span>[business_address]</span></a></li></ul></div><div class="footer-column footer-social"><h3 class="footer-title">עקבו אחרינו</h3><div class="social-links"><a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div></div><div class="footer-bottom"><div class="footer-legal"><a href="/privacy">Privacy Policy</a><span class="separator">|</span><a href="/terms">Terms &amp; Conditions</a><span class="separator">|</span><a href="/accessibility">Accessibility</a></div><div class="footer-copyright"><p>© 2026 בית חולים זיו. All rights reserved.</p><a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a></div></div></div></footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <script src="/script.js"></script>
+
+    <div data-integration="accessibility:toolbar"></div>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body></html>

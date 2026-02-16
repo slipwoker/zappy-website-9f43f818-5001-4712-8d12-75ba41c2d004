@@ -1,0 +1,682 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מידע למטופלים - בית חולים זיו</title>
+  <meta name="description" content="מידע למטופלים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <meta name="keywords" content="בית חולים זיו, זימון תורים, בית חולים זיו צפת, זימון תור למרפאה בית חולים זיו">
+  <meta name="robots" content="index, follow">
+  
+  <meta property="og:title" content="מידע למטופלים - בית חולים זיו">
+  <meta property="og:description" content="מידע למטופלים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="מידע למטופלים - בית חולים זיו">
+  <meta name="twitter:description" content="מידע למטופלים - בית חולים זיו provides professional בריאות ורפואה services. Specializing in בית חולים זיו.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+<!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: '9f43f818-5001-4712-8d12-75ba41c2d004',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+</head>
+<body>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="בית חולים זיו" class="logo" />
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/services">שירותים</a></li><li><a href="/patient-information">מידע למטופלים</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="patient-info-hero-lite-section" data-layout-spec="מידע למטופלים-hero-lite">
+  <div class="patient-info-hero-lite-container">
+    <div class="patient-info-hero-lite-header">
+      <h1>מידע למטופלים, פשוט ובהיר</h1>
+      <p>אנחנו כאן כדי להפוך את הביקור שלכם לחוויה נוחה ובטוחה. כל המידע שאתם צריכים – במקום אחד, ברור ונגיש.</p>
+    </div>
+
+    <div class="patient-info-hero-lite-diagram">
+      <div class="patient-info-hero-lite-diagram-column">
+        <div class="patient-info-hero-lite-diagram-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="8" width="28" height="32" rx="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+            <path d="M16 16h16M16 22h16M16 28h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>לפני הביקור</h3>
+        <p>הכינו את כל המסמכים הרפואיים הרלוונטיים מראש</p>
+        <p>הגיעו 15 דקות לפני מועד התור שלכם</p>
+        <p>רשמו את כל השאלות שחשוב לכם לשאול</p>
+      </div>
+
+      <div class="patient-info-hero-lite-diagram-column">
+        <div class="patient-info-hero-lite-diagram-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="18" r="6" stroke="currentColor" stroke-width="2" fill="none"></circle>
+            <path d="M12 38c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            <path d="M30 18h6M33 15v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <h3>במהלך הביקור</h3>
+        <p>שתפו את הרופא בכל המידע הרפואי החשוב</p>
+        <p>אל תהססו לשאול שאלות ולבקש הבהרות</p>
+        <p>קבלו הסבר מפורט על התרופות והטיפול</p>
+      </div>
+
+      <div class="patient-info-hero-lite-diagram-column">
+        <div class="patient-info-hero-lite-diagram-icon">
+          <svg data-element-type="icon" data-icon-type="svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12v24M12 24h24" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            <circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="2" fill="none"></circle>
+            <path d="M24 18l4 6-4 6-4-6z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <h3>אחרי הביקור</h3>
+        <p>בצעו את כל הבדיקות וההמשכים שהומלצו</p>
+        <p>פנו אלינו בכל שאלה או חוסר בהירות</p>
+        <p>שמרו על קשר רציף עם הצוות הרפואי שלכם</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="patient-info-hero-lite-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,100 L0,45 Q100,35 200,42 T400,38 Q500,45 600,40 T800,42 Q900,38 1000,45 T1200,40 L1200,100 Z" fill="var(--accent)"></path>
+      <path d="M0,100 L0,60 Q150,52 300,58 T600,55 Q750,60 900,56 T1200,58 L1200,100 Z" fill="var(--accent)" opacity="0.6"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="מידע-למטופלים-resources-section" data-layout-spec="מידע למטופלים-resources">
+  <div class="מידע-למטופלים-resources-container">
+    <div class="מידע-למטופלים-resources-content">
+      <div class="מידע-למטופלים-resources-intro">
+        <h2>מדריכים ועזרה מעשית</h2>
+        <p>מצאו כאן מידע חיוני להכנה לביקורים, הבנת הליכים רפואיים וניהול טיפול יומיומי. כל המדריכים נכתבו בשפה ברורה ומותאמים לצרכים שלכם ושל בני משפחתכם.</p>
+      </div>
+      <div class="מידע-למטופלים-resources-grid">
+        <article class="מידע-למטופלים-resource-card">
+          <h3>הכנה לבדיקות מעבדה</h3>
+          <p>מה צריך לדעת לפני הגעה לבדיקות דם ושתן: צום, תרופות והמלצות חשובות להצלחת הבדיקה.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>סקירת ביקור בהדמיה</h3>
+          <p>מה לצפות מבדיקות הדמיה כמו רנטגן, CT ו-MRI: תהליך הבדיקה, משך הזמן והכנה נדרשת.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>ניהול תרופות</h3>
+          <p>טיפים לניהול בטוח של תרופות: לוח זמנים, אחסון נכון, תופעות לוואי ותיאום עם הצוות הרפואי.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>הבנת הפניות רפואיות</h3>
+          <p>כיצד לקרוא הפניה למומחה, מה המשמעות של קודי בדיקה ואיך לתאם את המשך הטיפול.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>בדיקות מניעה</h3>
+          <p>מדריך לבדיקות מניעה מומלצות לפי גיל ומצב בריאותי: סקר, בדיקות דם שנתיות ובדיקות מוקדמות.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>פרטיות והסכמה מדעת</h3>
+          <p>הבנת זכויותיכם: פרטיות רפואית, הסכמה לטיפולים וגישה למידע רפואי אישי.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>טיפים למטפלים</h3>
+          <p>עצות מעשיות למי שמלווה קרוב משפחה: ניהול זמן, תקשורת עם צוות רפואי ושמירה על בריאות נפשית.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+        <article class="מידע-למטופלים-resource-card">
+          <h3>מתי לפנות לטיפול דחוף</h3>
+          <p>הנחיות כלליות לזיהוי מצבים הדורשים טיפול מיידי ואיך לפעול במצבי חירום רפואיים.</p>
+          <a href="#contact" class="מידע-למטופלים-resource-link">פרטים נוספים <i class="fas fa-arrow-left" aria-hidden="true"></i></a>
+        </article>
+      </div>
+    </div>
+  </div>
+  <div class="מידע-למטופלים-resources-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,80 L0,0 L80,0 L1120,0 L1200,0 L1200,80 L1120,80 L80,80 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="patient-info-checklist-section" data-layout-spec="מידע למטופלים-checklist">
+  <div class="patient-info-checklist-container">
+    <h2 class="patient-info-checklist-title">מה חשוב להביא איתך לביקור</h2>
+    <div class="patient-info-checklist-panel">
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C9.243 2 7 4.243 7 7v3H6c-1.103 0-2 .897-2 2v8c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-8c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm3 8V7c0-1.654-1.346-3-3-3S9 5.346 9 7v3h6z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">תעודת זהות</h3>
+          <p class="patient-info-checklist-item-text">הבא תעודה מזהה בתוקף (תעודת זהות או דרכון) לצורך זיהוי ורישום במערכת בית החולים.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">רשימת תרופות עדכנית</h3>
+          <p class="patient-info-checklist-item-text">רשימה מפורטת של כל התרופות שאתה נוטל כיום, כולל מינון ותדירות, כדי לסייע לצוות הרפואי בתכנון הטיפול.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.903 8.586a.997.997 0 00-.196-.293l-6-6a.997.997 0 00-.293-.196c-.03-.014-.062-.022-.094-.033a.991.991 0 00-.259-.051C13.04 2.011 13.021 2 13 2H6c-1.103 0-2 .897-2 2v16c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2V9c0-.021-.011-.04-.013-.062a.952.952 0 00-.051-.259c-.01-.032-.019-.063-.033-.093zM16.586 8H14V5.414L16.586 8zM6 20V4h6v5a1 1 0 001 1h5v10H6z" fill="currentColor"></path>
+            <path d="M8 12h8v2H8zm0 4h8v2H8zm0-8h2v2H8z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">תוצאות בדיקות קודמות</h3>
+          <p class="patient-info-checklist-item-text">סיכום תוצאות בדיקות דם, הדמיה או בדיקות אחרות שבוצעו לאחרונה, לצורך השוואה ומעקב רפואי מדויק.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zM4 6h16v2H4V6zm0 12v-6h16.001l.001 6H4z" fill="currentColor"></path>
+            <path d="M6 14h6v2H6z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">פרטי ביטוח (במידת הצורך)</h3>
+          <p class="patient-info-checklist-item-text">כרטיס חבר בקופת חולים ופרטי ביטוח משלים או פרטי במידה ויש, לצורך תיאום תשלומים וכיסויים.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6a3.939 3.939 0 00-3.934 3.934h2C10.066 8.867 10.934 8 12 8s1.934.867 1.934 1.934c0 .598-.481 1.032-1.216 1.626a9.208 9.208 0 00-.691.599c-.998.997-1.027 2.056-1.027 2.174V15h2l-.001-.633c.001-.016.033-.386.441-.793.15-.15.339-.3.535-.458.779-.631 1.958-1.584 1.958-3.182A3.937 3.937 0 0012 6zm-1 10h2v2h-2z" fill="currentColor"></path>
+            <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">שאלות מרכזיות</h3>
+          <p class="patient-info-checklist-item-text">רשימה קצרה של שאלות שחשוב לך לשאול את הרופא, כדי להבטיח שתקבל את כל המידע הדרוש לך במהלך הביקור.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" fill="currentColor"></path>
+            <path d="M13 7h-2v6h6v-2h-4z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">ציר זמן של תסמינים</h3>
+          <p class="patient-info-checklist-item-text">תיאור קצר של מתי החלו התסמינים, כיצד הם התפתחו לאורך זמן, ומה משפיע עליהם (טוב או רע).</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z" fill="currentColor"></path>
+            <path d="M11 11h2v6h-2zm0-4h2v2h-2z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">מידע על אלרגיות</h3>
+          <p class="patient-info-checklist-item-text">פרטים על אלרגיות לתרופות, מזון או חומרים אחרים, כדי למנוע תגובות לא רצויות במהלך הטיפול הרפואי.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 4H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2zM8.715 8c1.151 0 2 .849 2 2s-.849 2-2 2-2-.849-2-2 .848-2 2-2zm3.715 8H5v-.465c0-1.373 1.676-2.785 3.715-2.785s3.715 1.412 3.715 2.785V16zM19 15h-4v-2h4v2zm0-4h-5V9h5v2z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">פרטי קשר עדכניים</h3>
+          <p class="patient-info-checklist-item-text">מספר טלפון נייד ודוא"ל עדכניים, כדי שנוכל ליצור איתך קשר במידת הצורך לתיאום המשך טיפול או עדכונים.</p>
+        </div>
+      </div>
+      
+      <div class="patient-info-checklist-item">
+        <div class="patient-info-checklist-icon-wrapper">
+          <svg data-element-type="icon" data-icon-type="svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2 7.5 4.019 7.5 6.5zM20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h17z" fill="currentColor"></path>
+          </svg>
+        </div>
+        <div class="patient-info-checklist-content">
+          <h3 class="patient-info-checklist-item-title">הערות מלווה (במידת הצורך)</h3>
+          <p class="patient-info-checklist-item-text">אם מגיע איתך בן משפחה או מלווה, ניתן להוסיף הערות או שאלות שלהם כדי להבטיח תקשורת מלאה עם הצוות הרפואי.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="patient-info-checklist-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="checklist-divider-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#0EA5A4;stop-opacity:1"></stop>
+          <stop offset="70%" style="stop-color:#0EA5A4;stop-opacity:0.4"></stop>
+          <stop offset="100%" style="stop-color:#0EA5A4;stop-"></stop>
+        </linearGradient>
+      </defs>
+      <line x1="0" y1="20" x2="840" y2="20" stroke="url(#checklist-divider-gradient)" stroke-width="2"></line>
+      <line x1="840" y1="20" x2="1200" y2="20" stroke="url(#checklist-divider-gradient)" stroke-width="2" stroke-dasharray="8,8"></line>
+    </svg>
+  </div>
+</section>
+
+<section class="מידע-למטופלים-success-stories-section" data-layout-spec="מידע למטופלים-success-stories">
+  <div class="success-stories-container">
+    <div class="success-stories-grid">
+      <div class="success-stories-content">
+        <h2>בהירות משנה תוצאות</h2>
+        <p>אנחנו מבינים שרגעי חוסר ודאות רפואית יכולים להיות מלחיצים. בבית חולים זיו, אנחנו שמים דגש על הסברים ברורים, תקשורת פתוחה והבנה מעמיקה של הצעדים הבאים. כל מטופל ומשפחה זוכים לתמיכה אישית, מידע מפורט ותחושת ביטחון לאורך כל המסע הרפואי.</p>
+        
+        <div class="story-blocks">
+          <div class="story-block">
+            <h3>מבלבול לתוכנית ברורה</h3>
+            <p>"הגעתי עם תסמינים מורכבים וחששות רבים. הצוות הרפואי הקדיש זמן להסביר כל שלב, לענות על כל שאלה ולבנות איתי תוכנית טיפול ברורה. יצאתי עם תחושת שליטה והבנה מלאה של מה צפוי לי."</p>
+          </div>
+          
+          <div class="story-block">
+            <h3>חוויה רגועה יותר למשפחות</h3>
+            <p>"כשבן משפחה מאושפז, הדאגה טבעית. הצוות ב<strong>בית חולים זיו</strong> דאג לעדכן אותנו באופן שוטף, להסביר כל החלטה רפואית ולתת לנו תחושה שאנחנו שותפים מלאים בתהליך. זה שינה את החוויה מיסורים לתקווה."</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="success-stories-images">
+        <div class="image-grid">
+          <img data-placeholder="מידע-למטופלים-success-stories-image-1" data-context="A bright, naturally-lit hospital consultation room with a doctor and patient having a calm, reassuring conversation. Modern medical facility in Israel, professional healthcare setting, warm natural light streaming through windows, clean white walls, medical charts on desk, both people smiling, patient looks relieved and understood" width="280" height="280" src="/assets/site-success-stories-image-1.webp" alt="רופא ומטופל בשיחה רפואית רגועה">
+          
+          <img data-placeholder="מידע-למטופלים-success-stories-image-2" data-context="A family consultation room in a modern Israeli hospital, nurse explaining medical information to a worried family, bright natural lighting, clean clinical environment, family members sitting together looking attentive, medical staff showing empathy and care" width="280" height="280" src="/assets/site-success-stories-image-2.webp" alt="צוות רפואי מסביר למשפחה">
+          
+          <img data-placeholder="מידע-למטופלים-success-stories-image-3" data-context="A patient walking confidently through a bright hospital corridor after receiving clear medical guidance, modern Israeli medical facility, natural daylight, clean white hallways, medical staff in background, patient looks relieved and empowered" width="280" height="280" src="/assets/site-success-stories-image-3.webp" alt="מטופל בטוח לאחר קבלת הסברים רפואיים">
+          
+          <img data-placeholder="מידע-למטופלים-success-stories-image-4" data-context="A medical team reviewing patient charts together in a bright, modern hospital setting in Israel, collaborative healthcare environment, natural lighting, clean clinical space, doctors and nurses working together, professional medical teamwork" width="280" height="280" src="/assets/site-success-stories-image-4.webp" alt="צוות רפואי משתף פעולה">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="success-stories-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="mint-fade-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#DFF7F4;stop-opacity:0.3"></stop>
+          <stop offset="50%" style="stop-color:#0EA5A4;stop-opacity:0.15"></stop>
+          <stop offset="100%" style="stop-color:#0B1220;stop-opacity:0.8"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,100 L0,0 L1200,0 L1200,100 Z" fill="url(#mint-fade-gradient)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="patient-info-cta-section" data-layout-spec="מידע למטופלים-cta">
+  <div class="patient-info-cta-container">
+    <h2 class="patient-info-cta-heading">יש לך שאלה לגבי הביקור שלך?</h2>
+    <p class="patient-info-cta-text">אנחנו כאן כדי לעזור. צור קשר עם צוות בית חולים זיו לקבלת הבהרות, מידע נוסף ולתיאום הצעדים הבאים. נשמח לסייע לך בכל שאלה.</p>
+    <div class="patient-info-cta-buttons">
+      <a href="#contact" class="btn-primary patient-info-cta-btn-primary">צור קשר</a>
+      <a href="#services" class="btn-ghost patient-info-cta-btn-secondary">גלה את השירותים שלנו</a>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer"><div class="footer-container"><div class="footer-grid"><div class="footer-column footer-about"><img src="/assets/logo.webp" alt="בית חולים זיו" class="logo" /><p class="footer-description">מרכז רפואי מוביל המספק שירותי בריאות ברמה הגבוהה ביותר עם צוות מקצועי ומסור.</p></div><div class="footer-column footer-links"><h3 class="footer-title">קישורים מהירים</h3><ul class="footer-nav"><li><a href="/services">שירותים</a></li><li><a href="/patient-information">מידע למטופלים</a></li><li><a href="/contact">צור קשר</a></li></ul></div><div class="footer-column footer-contact"><h3 class="footer-title">יצירת קשר</h3><ul class="contact-list"><li><i class="fas fa-envelope"></i><a href="mailto:[business_email]">[business_email]</a></li><li><i class="fas fa-phone"></i><a href="tel:[business_phone]">[business_phone]</a></li><li><a href="/"><i class="fas fa-map-marker-alt"></i><span>[business_address]</span></a></li></ul></div><div class="footer-column footer-social"><h3 class="footer-title">עקבו אחרינו</h3><div class="social-links"><a href="[facebook_handle]" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="[instagram_handle]" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="[whatsapp_handle]" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div></div></div><div class="footer-bottom"><div class="footer-legal"><a href="/privacy">Privacy Policy</a><span class="separator">|</span><a href="/terms">Terms &amp; Conditions</a><span class="separator">|</span><a href="/accessibility">Accessibility</a></div><div class="footer-copyright"><p>© 2026 בית חולים זיו. All rights reserved.</p><a href="https://zappy5.com" target="_blank" class="zappy-attribution">Generated by Zappy</a></div></div></div></footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <script src="/script.js"></script>
+
+    <div data-integration="accessibility:toolbar"></div>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body></html>
